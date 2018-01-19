@@ -1,9 +1,16 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Calculator {
-    public static void main (String[] args) {
+
+    private static final String LOG_FILE = "calculator.log";
+
+    public static void main (String[] args) throws Exception {
         System.out.println("Welcome to the calculator!");
         System.out.println("==========================");
 
@@ -11,12 +18,13 @@ public class Calculator {
         Calculation calculation = chooseCalculation();
 
         // Choose the numbers
-        List<Integer> numbers = chooseNumbers();
+        List<Integer> numbers = readNumbersFromFile();
 
         // Calculate the result
         int result = calculate(calculation, numbers);
 
-        // Print the result
+        // Log and print the result
+        logResult(result);
         System.out.println("Result: " + result);
     }
 
@@ -48,10 +56,33 @@ public class Calculator {
         return numbers;
     }
 
+    private static List<Integer> readNumbersFromFile() throws FileNotFoundException {
+        System.out.println("Enter a file:");
+        Scanner scanner = new Scanner(System.in);
+        String fileString = scanner.next();
+
+        File file = new File(fileString);
+        try (Scanner fileScanner = new Scanner(file)) {
+            List<Integer> numbers = new ArrayList<>();
+
+            while (fileScanner.hasNextInt()) {
+                numbers.add(fileScanner.nextInt());
+            }
+
+            return numbers;
+        }
+    }
+
     private static int calculate(Calculation calculation, List<Integer> numbers) {
         return numbers
                 .stream()
                 .reduce((a, b) -> calculation.calculate(a, b))
                 .get();
+    }
+
+    private static void logResult(int result) throws IOException {
+        try (FileWriter writer = new FileWriter(LOG_FILE, true)) {
+            writer.write("Calculated result: " + result + "\n");
+        }
     }
 }
