@@ -5,17 +5,15 @@ public class Calculator {
     public static void main (String[] args) {
         System.out.println("Welcome to the calculator!");
 
-        // Generate two random numbers
-        Random random = new Random();
-        int first = random.nextInt(100);
-        int second = random.nextInt(100);
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("First number: " + first);
-        System.out.println("Second number: " + second);
+        // Read two numbers
+        System.out.println("Enter two numbers:");
+        int first = scanner.nextInt();
+        int second = scanner.nextInt();
 
         // Choose an operation
         System.out.println("Choose an operation (+,-,*):");
-        Scanner scanner = new Scanner(System.in);
         String input = scanner.next();
 
         // Perform the calculation
@@ -34,7 +32,7 @@ public class Calculator {
                 throw new IllegalArgumentException("You must enter one of (+,-,*)");
         }
 
-        // Print the result
-        System.out.println("Result: " + result);
+        // Print the calculation and result
+        System.out.println(first + input + second + " = "  + result);
     }
 }
