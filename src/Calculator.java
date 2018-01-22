@@ -10,22 +10,48 @@ public class Calculator {
 
     private static final String LOG_FILE = "calculator.log";
 
-    public static void main (String[] args) throws Exception {
+    public static void main (String[] args) {
         System.out.println("Welcome to the calculator!");
         System.out.println("==========================");
 
-        // Choose an operation
-        Calculation calculation = chooseCalculation();
+        while (true) {
+            // Choose an operation
+            Calculation calculation;
+            try {
+                calculation = chooseCalculation();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                continue;
+            }
 
-        // Choose the numbers
-        List<Integer> numbers = readNumbersFromFile();
+            // Choose the numbers
+            List<Integer> numbers;
+            try {
+                numbers = readNumbersFromFile();
+            } catch (FileNotFoundException e) {
+                System.out.println("Could not find the specified file");
+                continue;
+            }
 
-        // Calculate the result
-        int result = calculate(calculation, numbers);
+            // Calculate the result
+            int result = calculate(calculation, numbers);
 
-        // Log and print the result
-        logResult(result);
-        System.out.println("Result: " + result);
+            // Log and print the result
+            try {
+                logResult(result);
+            } catch (IOException e) {
+                // Error writing to log file - ignore
+            }
+
+            System.out.println("Result: " + result);
+
+            // Ask if we should continue
+            System.out.println("Perform another calculation? (y/n)");
+            Scanner scanner = new Scanner(System.in);
+            if (!scanner.next().startsWith("y")) {
+                break;
+            }
+        }
     }
 
     private static Calculation chooseCalculation() {
