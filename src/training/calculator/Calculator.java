@@ -1,3 +1,10 @@
+package training.calculator;
+
+import training.calculator.calculations.Add;
+import training.calculator.calculations.Calculation;
+import training.calculator.calculations.Multiply;
+import training.calculator.calculations.Subtract;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;

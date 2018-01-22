@@ -1,3 +1,5 @@
+package training.calculator.calculations;
+
 public class Multiply implements Calculation {
     @Override
     public int calculate(int first, int second) {
